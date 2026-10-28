@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meu Negócio Digital</title>
+
+<style>
+:root{--bg:#f6f8f4;--card:#fff;--ink:#1b2a28;--mute:#4f605d;--line:#cfd9d5;--pri:#0b6b4d;--pri-ink:#fff;--sun:#f4b400;--ok:#0b6b4d;--warn:#8a5a00;--warn-bg:#fff0c9;--bad:#a4281c;--bad-bg:#fde4e1;--ok-bg:#dff3ea;--fs:18px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101816;--card:#18231f;--ink:#eef4f1;--mute:#a9bbb5;--line:#34453f;--pri:#4cc79a;--pri-ink:#07251b;--sun:#f4b400;--ok:#4cc79a;--warn:#ffd36b;--warn-bg:#3b2f10;--bad:#ff8f84;--bad-bg:#3d1a17;--ok-bg:#16382c}}
+:root[data-theme="dark"]{--bg:#101816;--card:#18231f;--ink:#eef4f1;--mute:#a9bbb5;--line:#34453f;--pri:#4cc79a;--pri-ink:#07251b;--sun:#f4b400;--ok:#4cc79a;--warn:#ffd36b;--warn-bg:#3b2f10;--bad:#ff8f84;--bad-bg:#3d1a17;--ok-bg:#16382c}
+*{box-sizing:border-box}
+html{font-size:var(--fs);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.5;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--pri);z-index:30}
+header{background:var(--pri);color:var(--pri-ink);padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+header h1{font-size:1.15rem;margin:0;flex:1;line-height:1.2}
+header small{display:block;font-weight:400;opacity:.9;font-size:.8rem}
+.tools{display:flex;gap:6px}
+.tools button{min-height:44px;min-width:44px;border:2px solid currentColor;background:transparent;color:inherit;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+main{max-width:640px;margin:0 auto;padding:16px}
+section[hidden]{display:none}
+h2{font-size:1.35rem;margin:4px 0 12px}
+h3{font-size:1.05rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+label{display:block;font-weight:700;margin:12px 0 6px}
+input,select,textarea{width:100%;min-height:52px;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:10px 12px}
+textarea{min-height:110px;resize:vertical}
+.hint{color:var(--mute);font-size:.88rem;margin:4px 0 0}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;margin-top:16px;border:0;border-radius:14px;background:var(--pri);color:var(--pri-ink);font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.small{min-height:44px;margin:0;width:auto;padding:0 14px;font-size:.9rem}
+:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+.stepper{display:flex;gap:10px;align-items:center}
+.stepper button{flex:0 0 56px;min-height:56px;font-size:1.5rem;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-weight:700}
+.stepper input{text-align:center;font-weight:700;font-size:1.3rem}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-size:1.1rem}
+.total b{font-size:1.6rem}
+.big{font-size:2rem;font-weight:700;line-height:1.1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:var(--ok-bg);border-radius:14px;padding:12px}
+.stat span{display:block;color:var(--mute);font-size:.85rem}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .grow{flex:1;min-width:0}
+.row .grow b{display:block;overflow-wrap:anywhere}
+.row .sub{color:var(--mute);font-size:.88rem}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.82rem;font-weight:700}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-low{background:var(--warn-bg);color:var(--warn)}.b-out{background:var(--bad-bg);color:var(--bad)}
+.empty{text-align:center;color:var(--mute);padding:20px 8px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--line);padding:4px;border-radius:14px;margin-bottom:14px}
+.seg button{min-height:48px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--pri);color:var(--pri-ink)}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--mute);font-family:inherit;font-size:11px}
+.chart .bar{fill:var(--pri)}.chart .bar.top{fill:var(--sun)}
+details{border-top:1px solid var(--line);padding:4px 0}
+details:first-of-type{border-top:0}
+summary{min-height:52px;display:flex;align-items:center;font-weight:700;cursor:pointer;gap:8px}
+details p,details ul{margin:0 0 12px;color:var(--ink)}
+details ul{padding-left:22px}
+.stars{display:flex;gap:6px;justify-content:space-between}
+.stars button{flex:1;min-height:56px;font-size:1.7rem;border:2px solid var(--line);background:var(--card);border-radius:12px;cursor:pointer;color:var(--mute)}
+.stars button[aria-pressed="true"]{border-color:var(--sun);background:var(--sun);color:#1b2a28}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px);z-index:20}
+nav button{min-height:68px;border:0;background:transparent;color:var(--mute);font:inherit;font-size:.72rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer}
+nav button .i{font-size:1.5rem;line-height:1}
+nav button[aria-current="page"]{color:var(--pri);box-shadow:inset 0 4px 0 var(--pri)}
+#toast{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));max-width:608px;margin:0 auto;background:var(--ink);color:var(--bg);padding:14px 16px;border-radius:14px;font-weight:700;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Meu Negócio<small>Vendas, estoque e dicas num só lugar</small></h1>
+  <div class="tools">
+    <button id="fsBtn" aria-label="Aumentar tamanho das letras" title="Letras maiores">A+</button>
+    <button id="themeBtn" aria-label="Alternar tema claro ou escuro" title="Claro/Escuro">◐</button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- VENDER -->
+<section id="vender" aria-labelledby="t1">
+  <h2 id="t1">Registrar venda</h2>
+  <div class="card" id="sellCard">
+    <label for="sProd">O que você vendeu?</label>
+    <select id="sProd"></select>
+    <label for="sQty">Quantidade</label>
+    <div class="stepper">
+      <button type="button" id="qMinus" aria-label="Diminuir quantidade">−</button>
+      <input id="sQty" type="number" inputmode="numeric" min="1" value="1">
+      <button type="button" id="qPlus" aria-label="Aumentar quantidade">+</button>
+    </div>
+    <div class="total"><span>Total da venda</span><b id="sTotal">R$ 0,00</b></div>
+    <button class="btn" id="sellBtn" type="button">✔ Registrar venda</button>
+  </div>
+  <div class="card">
+    <h3>Vendido hoje</h3>
+    <div class="big" id="todayTotal">R$ 0,00</div>
+    <p class="hint" id="todayCount"></p>
+    <div id="todayList"></div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section id="produtos" hidden aria-labelledby="t2">
+  <h2 id="t2">Produtos e estoque</h2>
+  <div class="card">
+    <h3>Novo produto</h3>
+    <label for="pName">Nome do produto</label>
+    <input id="pName" type="text" placeholder="Ex.: Bolo de cenoura" autocomplete="off">
+    <label for="pPrice">Preço (R$)</label>
+    <input id="pPrice" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex.: 12,50">
+    <label for="pStock">Quantidade em estoque</label>
+    <input id="pStock" type="number" inputmode="numeric" min="0" placeholder="Ex.: 20">
+    <p class="hint">Avisamos quando restarem 5 unidades ou menos.</p>
+    <button class="btn" id="addBtn" type="button">＋ Salvar produto</button>
+  </div>
+  <div class="card">
+    <h3>Seu estoque</h3>
+    <div id="stockList"></div>
+  </div>
+</section>
+
+<!-- RELATÓRIOS -->
+<section id="relatorios" hidden aria-labelledby="t3">
+  <h2 id="t3">Quanto vendi</h2>
+  <div class="seg" role="group" aria-label="Período">
+    <button type="button" data-p="7" aria-pressed="true">Esta semana</button>
+    <button type="button" data-p="30" aria-pressed="false">Este mês</button>
+  </div>
+  <div class="card">
+    <h3 id="repLabel">Faturamento</h3>
+    <div class="big" id="repTotal">R$ 0,00</div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="stat"><span>Vendas feitas</span><b id="repCount">0</b></div>
+      <div class="stat"><span>Mais vendido</span><b id="repTop">—</b></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Faturamento por período</h3>
+    <div id="chartBox" role="img" aria-label="Gráfico de barras do faturamento"></div>
+    <p class="hint">A barra amarela é o melhor período.</p>
+  </div>
+  <button class="btn alt" id="demoBtn" type="button">Restaurar dados de exemplo</button>
+  <button class="btn alt" id="clearBtn" type="button">Apagar todos os dados</button>
+</section>
+
+<!-- DICAS -->
+<section id="dicas" hidden aria-labelledby="t4">
+  <h2 id="t4">Divulgar e conversar com clientes</h2>
+  <div class="card">
+    <details open><summary>📱 Crie um WhatsApp Business</summary>
+      <ul><li>Baixe o app gratuito e coloque nome, endereço e horário.</li><li>Monte um catálogo com foto, nome e preço de cada produto.</li><li>Use respostas rápidas para “bom dia” e “qual o preço?”.</li></ul></details>
+    <details><summary>📸 Tire boas fotos</summary>
+      <ul><li>Fotografe perto de uma janela, com luz do dia.</li><li>Fundo limpo e simples valoriza o produto.</li><li>Mostre o produto em uso ou sendo feito.</li></ul></details>
+    <details><summary>📣 Use as redes sociais</summary>
+      <ul><li>Escolha uma rede (Instagram ou Facebook) e seja constante.</li><li>Poste novidades e promoções 3 vezes por semana.</li><li>Use os Stories para mostrar o dia a dia do negócio.</li></ul></details>
+    <details><summary>📍 Apareça no Google Maps</summary>
+      <p>Crie seu perfil gratuito no Google Meu Negócio. Clientes da região encontram você, veem o horário e pedem rota até a loja.</p></details>
+    <details><summary>💬 Peça indicação</summary>
+      <p>Cliente satisfeito é a melhor propaganda. Peça que ele compartilhe seu contato e deixe uma avaliação. Considere um pequeno brinde por indicação.</p></details>
+    <details><summary>💳 Facilite o pagamento</summary>
+      <p>Aceite Pix e coloque o QR Code visível no balcão e no seu perfil. Pagar fácil faz vender mais.</p></details>
+    <details><summary>🤝 Converse bem com os clientes</summary>
+      <ul><li>Responda em até 1 hora no horário comercial.</li><li>Use linguagem simples e cumprimente pelo nome.</li><li>Avise quando um produto voltar ao estoque.</li><li>Depois da venda, pergunte se o cliente gostou.</li></ul></details>
+  </div>
+  <div class="card">
+    <h3>Links úteis (gratuitos)</h3>
+    <a class="btn alt" style="text-decoration:none;margin-top:10px" href="https://business.whatsapp.com" target="_blank" rel="noopener">📱 WhatsApp Business</a>
+    <a class="btn alt" style="text-decoration:none;margin-top:10px" href="https://business.google.com" target="_blank" rel="noopener">📍 Perfil da Empresa no Google</a>
+    <a class="btn alt" style="text-decoration:none;margin-top:10px" href="https://www.instagram.com" target="_blank" rel="noopener">📸 Instagram</a>
+    <a class="btn alt" style="text-decoration:none;margin-top:10px" href="https://www.facebook.com/business" target="_blank" rel="noopener">📣 Facebook para Empresas</a>
+    <a class="btn alt" style="text-decoration:none;margin-top:10px" href="https://www.canva.com" target="_blank" rel="noopener">🎨 Canva (criar posts e cartazes)</a>
+  </div>
+  <div class="card">
+    <h3>Este sistema e o Desenho Universal</h3>
+    <details><summary>1. Uso equitativo</summary><p>Mesma interface para todos, com tema claro/escuro e letras ajustáveis.</p></details>
+    <details><summary>2. Flexibilidade de uso</summary><p>Funciona no celular ou no computador, com toque ou teclado.</p></details>
+    <details><summary>3. Uso simples e intuitivo</summary><p>Linguagem do dia a dia e uma tarefa principal por tela.</p></details>
+    <details><summary>4. Informação perceptível</summary><p>Ícone + texto, contraste alto e cores nunca são o único sinal.</p></details>
+    <details><summary>5. Tolerância ao erro</summary><p>Confirmação antes de apagar, botão Desfazer e avisos claros.</p></details>
+    <details><summary>6. Baixo esforço físico</summary><p>Botões grandes, poucos toques e menu ao alcance do polegar.</p></details>
+    <details><summary>7. Tamanho e espaço adequados</summary><p>Alvos de toque de 44 a 56 px e espaçamento generoso.</p></details>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback" hidden aria-labelledby="t5">
+  <h2 id="t5">Sua opinião</h2>
+  <div class="card">
+    <p style="margin-top:0">Conte como foi usar o sistema. Leva menos de 1 minuto.</p>
+    <p class="hint">Simulação do formulário de validação. No projeto, as respostas são coletadas no Google Forms.</p>
+    <label id="starLbl">Qual nota você dá?</label>
+    <div class="stars" role="group" aria-labelledby="starLbl" id="stars"></div>
+    <label for="fEase">Foi fácil de usar?</label>
+    <select id="fEase"><option value="">Escolha uma opção</option><option>Muito fácil</option><option>Fácil</option><option>Difícil</option><option>Muito difícil</option></select>
+    <label for="fUse">Você usaria no seu negócio?</label>
+    <select id="fUse"><option value="">Escolha uma opção</option><option>Sim</option><option>Talvez</option><option>Não</option></select>
+    <label for="fTxt">O que podemos melhorar? (opcional)</label>
+    <textarea id="fTxt" placeholder="Escreva aqui…"></textarea>
+    <button class="btn" id="fBtn" type="button">✉ Enviar opinião</button>
+  </div>
+  <div class="card" id="fSummary" hidden><h3>Opiniões enviadas neste aparelho</h3><div id="fList"></div></div>
+</section>
+
+</main>
+<p style="text-align:center;color:var(--mute);font-size:.8rem;margin:0 16px 16px">Atividade Extensionista II · UNINTER · ODS 8, 9 e 10</p>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<nav aria-label="Menu principal">
+  <button data-t="vender" aria-current="page"><span class="i" aria-hidden="true">🛒</span>Vender</button>
+  <button data-t="produtos"><span class="i" aria-hidden="true">📦</span>Estoque</button>
+  <button data-t="relatorios"><span class="i" aria-hidden="true">📊</span>Relatório</button>
+  <button data-t="dicas"><span class="i" aria-hidden="true">💡</span>Dicas</button>
+  <button data-t="feedback"><span class="i" aria-hidden="true">⭐</span>Opinião</button>
+</nav>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='meunegocio-v1';
+let mem=null;
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return mem}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S}}
+const brl=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const day=d=>{const x=new Date(d);x.setHours(0,0,0,0);return x.getTime()};
+const DAY=864e5;
+
+function demo(){
+  const prods=[{id:1,name:'Bolo de cenoura (fatia)',price:6.5,stock:18},{id:2,name:'Pão de queijo (6 un.)',price:9,stock:4},{id:3,name:'Café coado',price:4,stock:40},{id:4,name:'Suco natural',price:7,stock:0}];
+  const sales=[];let id=100;const now=Date.now();
+  for(let d=29;d>=0;d--){const n=2+Math.floor(Math.abs(Math.sin(d*7.3))*4);
+    for(let k=0;k<n;k++){const p=prods[(d+k*3)%4];const q=1+((d+k)%3);
+      sales.push({id:id++,pid:p.id,name:p.name,price:p.price,qty:q,ts:now-d*DAY-k*36e5})}}
+  return{products:prods,sales,feedback:[],next:10}
+}
+let S=load()||demo();
+
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2600)}
+const status=p=>p.stock<=0?['b-out','Acabou']:p.stock<=5?['b-low','Estoque baixo']:['b-ok','Em estoque'];
+
+/* navegação */
+function go(id){
+  $$('main>section').forEach(s=>s.hidden=s.id!==id);
+  $$('nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.t===id?'page':'false'));
+  $('#main').focus({preventScroll:true});window.scrollTo(0,0);
+  if(id==='relatorios')renderReport();
+}
+$$('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+
+/* vender */
+function renderSell(){
+  const sel=$('#sProd'),cur=sel.value;
+  const avail=S.products.filter(p=>p.stock>0);
+  sel.innerHTML=avail.length?avail.map(p=>`<option value="${p.id}">${esc(p.name)} — ${brl(p.price)} (${p.stock} un.)</option>`).join(''):'<option value="">Cadastre um produto primeiro</option>';
+  if(cur&&avail.some(p=>String(p.id)===cur))sel.value=cur;
+  calc();
+  const t0=day(Date.now()),today=S.sales.filter(s=>s.ts>=t0).sort((a,b)=>b.ts-a.ts);
+  $('#todayTotal').textContent=brl(today.reduce((a,s)=>a+s.price*s.qty,0));
+  $('#todayCount').textContent=today.length?`${today.length} venda(s) registrada(s) hoje`:'';
+  $('#todayList').innerHTML=today.length?today.map(s=>`<div class="row"><div class="grow"><b>${s.qty} × ${esc(s.name)}</b><span class="sub">${new Date(s.ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})} · ${brl(s.price*s.qty)}</span></div><button class="btn alt small" data-undo="${s.id}" aria-label="Desfazer venda de ${esc(s.name)}">Desfazer</button></div>`).join(''):'<div class="empty">Nenhuma venda hoje ainda.<br>Registre a primeira acima.</div>';
+}
+function calc(){const p=S.products.find(x=>String(x.id)===$('#sProd').value);const q=Math.max(1,parseInt($('#sQty').value)||1);$('#sTotal').textContent=brl(p?p.price*q:0)}
+$('#sProd').onchange=calc;$('#sQty').oninput=calc;
+$('#qMinus').onclick=()=>{$('#sQty').value=Math.max(1,(parseInt($('#sQty').value)||1)-1);calc()};
+$('#qPlus').onclick=()=>{$('#sQty').value=(parseInt($('#sQty').value)||1)+1;calc()};
+$('#sellBtn').onclick=()=>{
+  const p=S.products.find(x=>String(x.id)===$('#sProd').value);
+  if(!p)return toast('Cadastre um produto na aba Estoque.');
+  const q=Math.max(1,parseInt($('#sQty').value)||1);
+  if(q>p.stock)return toast(`Só restam ${p.stock} unidade(s) em estoque.`);
+  p.stock-=q;S.sales.push({id:S.next++,pid:p.id,name:p.name,price:p.price,qty:q,ts:Date.now()});
+  save();$('#sQty').value=1;renderAll();
+  toast(p.stock<=5?`Venda registrada. Atenção: restam ${p.stock} em estoque.`:'Venda registrada!');
+};
+$('#todayList').onclick=e=>{const id=e.target.dataset.undo;if(!id)return;
+  const i=S.sales.findIndex(s=>String(s.id)===id);if(i<0)return;
+  const s=S.sales[i],p=S.products.find(x=>x.id===s.pid);if(p)p.stock+=s.qty;
+  S.sales.splice(i,1);save();renderAll();toast('Venda desfeita. Estoque devolvido.')};
+
+/* estoque */
+function renderStock(){
+  $('#stockList').innerHTML=S.products.length?S.products.map(p=>{const [c,l]=status(p);
+    return `<div class="row"><div class="grow"><b>${esc(p.name)}</b><span class="sub">${brl(p.price)} · ${p.stock} un.</span><br><span class="badge ${c}">${l}</span></div>
+    <button class="btn alt small" data-add="${p.id}" aria-label="Adicionar 1 unidade de ${esc(p.name)}">＋1</button>
+    <button class="btn alt small" data-del="${p.id}" aria-label="Remover ${esc(p.name)}">🗑</button></div>`}).join(''):'<div class="empty">Nenhum produto ainda.<br>Cadastre o primeiro acima.</div>';
+}
+$('#stockList').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.add){S.products.find(p=>String(p.id)===b.dataset.add).stock++;save();renderAll()}
+  if(b.dataset.del){const p=S.products.find(p=>String(p.id)===b.dataset.del);
+    if(confirm(`Remover "${p.name}" do estoque? As vendas já feitas continuam nos relatórios.`)){S.products=S.products.filter(x=>x!==p);save();renderAll();toast('Produto removido.')}}};
+$('#addBtn').onclick=()=>{
+  const name=$('#pName').value.trim(),price=parseFloat($('#pPrice').value),stock=parseInt($('#pStock').value);
+  if(!name)return toast('Digite o nome do produto.');
+  if(isNaN(price)||price<0)return toast('Digite um preço válido.');
+  if(isNaN(stock)||stock<0)return toast('Digite a quantidade em estoque.');
+  S.products.push({id:S.next++,name,price,stock});save();
+  ['#pName','#pPrice','#pStock'].forEach(s=>$(s).value='');renderAll();toast('Produto salvo!');
+};
+
+/* relatórios */
+let period=7;
+$$('.seg button').forEach(b=>b.onclick=()=>{period=+b.dataset.p;$$('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));renderReport()});
+function renderReport(){
+  const t0=day(Date.now()),start=t0-(period-1)*DAY;
+  const list=S.sales.filter(s=>s.ts>=start);
+  const total=list.reduce((a,s)=>a+s.price*s.qty,0);
+  $('#repLabel').textContent=period===7?'Faturamento dos últimos 7 dias':'Faturamento dos últimos 30 dias';
+  $('#repTotal').textContent=brl(total);$('#repCount').textContent=list.length;
+  const by={};list.forEach(s=>by[s.name]=(by[s.name]||0)+s.qty);
+  const top=Object.entries(by).sort((a,b)=>b[1]-a[1])[0];$('#repTop').textContent=top?top[0]:'—';
+  const step=period===7?1:5,n=period/step,vals=[],labs=[];
+  for(let i=0;i<n;i++){const a=start+i*step*DAY,b=a+step*DAY;
+    vals.push(list.filter(s=>s.ts>=a&&s.ts<b).reduce((x,s)=>x+s.price*s.qty,0));
+    const d=new Date(a);labs.push(step===1?d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''):d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}))}
+  const max=Math.max(...vals,1),W=320,H=190,bw=W/n,mi=vals.indexOf(Math.max(...vals));
+  let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
+  vals.forEach((v,i)=>{const h=Math.max(v/max*130,v>0?3:0),x=i*bw+bw*.15,w=bw*.7;
+    svg+=`<rect class="bar${i===mi&&v>0?' top':''}" x="${x}" y="${150-h}" width="${w}" height="${h}" rx="4"/>`;
+    if(v>0)svg+=`<text x="${x+w/2}" y="${144-h}" text-anchor="middle">${Math.round(v)}</text>`;
+    svg+=`<text x="${x+w/2}" y="170" text-anchor="middle">${labs[i]}</text>`});
+  $('#chartBox').innerHTML=svg+'</svg>';
+  $('#chartBox').setAttribute('aria-label','Gráfico de barras: '+labs.map((l,i)=>`${l} ${brl(vals[i])}`).join(', '));
+}
+$('#demoBtn').onclick=()=>{if(confirm('Substituir seus dados pelos dados de exemplo?')){S=demo();save();renderAll();toast('Dados de exemplo restaurados.')}};
+$('#clearBtn').onclick=()=>{if(confirm('Apagar produtos, vendas e opiniões deste aparelho?')){S={products:[],sales:[],feedback:[],next:10};save();renderAll();toast('Dados apagados.')}};
+
+/* feedback */
+let stars=0;
+const st=$('#stars');
+for(let i=1;i<=5;i++){const b=document.createElement('button');b.type='button';b.textContent='★';b.setAttribute('aria-label',`${i} de 5 estrelas`);b.setAttribute('aria-pressed','false');
+  b.onclick=()=>{stars=i;[...st.children].forEach((x,j)=>x.setAttribute('aria-pressed',j<i))};st.appendChild(b)}
+$('#fBtn').onclick=()=>{
+  if(!stars)return toast('Escolha uma nota de 1 a 5 estrelas.');
+  S.feedback.push({stars,ease:$('#fEase').value,use:$('#fUse').value,txt:$('#fTxt').value.trim(),ts:Date.now()});save();
+  stars=0;[...st.children].forEach(x=>x.setAttribute('aria-pressed','false'));$('#fEase').value='';$('#fUse').value='';$('#fTxt').value='';
+  renderFeedback();toast('Obrigado pela sua opinião!');
+};
+function renderFeedback(){
+  $('#fSummary').hidden=!S.feedback.length;
+  $('#fList').innerHTML=S.feedback.slice().reverse().map(f=>`<div class="row"><div class="grow"><b>${'★'.repeat(f.stars)}${'☆'.repeat(5-f.stars)}</b><span class="sub">${esc(f.ease||'Sem resposta sobre facilidade')}${f.use?' · Usaria: '+esc(f.use):''}${f.txt?' — '+esc(f.txt):''}</span></div></div>`).join('');
+}
+
+/* acessibilidade */
+const sizes=[18,20,22];let si=0;
+try{si=+localStorage.getItem('mn-fs')||0}catch(e){}
+function applyFs(){document.documentElement.style.setProperty('--fs',sizes[si]+'px')}
+applyFs();
+$('#fsBtn').onclick=()=>{si=(si+1)%sizes.length;applyFs();try{localStorage.setItem('mn-fs',si)}catch(e){}toast('Tamanho das letras: '+['normal','grande','muito grande'][si])};
+$('#themeBtn').onclick=()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark'};
+
+function renderAll(){renderSell();renderStock();renderFeedback();if(!$('#relatorios').hidden)renderReport()}
+renderAll();
+})();
+</script>
+</body>
+</html>
